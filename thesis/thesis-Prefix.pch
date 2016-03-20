@@ -1,0 +1,29 @@
+//
+//  thesis-Prefix.pch
+//  thesis
+//
+//  Created by Helen Yu on 11/12/15.
+//  Copyright © 2015 Helen Yu. All rights reserved.
+//
+
+#ifndef thesis_Prefix_pch
+#define thesis_Prefix_pch
+
+#ifdef __OBJC__
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+#import <CoreData/CoreData.h>
+#endif
+
+#ifdef __cplusplus
+#import <opencv2/opencv.hpp>
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+#import <CoreData/CoreData.h>
+#endif
+
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#endif /* thesis_Prefix_pch */
