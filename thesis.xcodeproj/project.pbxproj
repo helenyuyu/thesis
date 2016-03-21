@@ -145,7 +145,7 @@
 		4C8556081C61D3B700FBDD5C /* ScanManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ScanManager.mm; path = Scanner/ScanManager.mm; sourceTree = "<group>"; };
 		4C85560B1C6408A900FBDD5C /* MeshViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeshViewCell.h; sourceTree = "<group>"; };
 		4C85560C1C6408A900FBDD5C /* MeshViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeshViewCell.m; sourceTree = "<group>"; };
-		4C98B2321BF0381C00FB559D /* thesis.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = thesis.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4C98B2321BF0381C00FB559D /* Hom3Design.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hom3Design.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C98B2361BF0381C00FB559D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		4C98B2381BF0381C00FB559D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		4C98B2391BF0381C00FB559D /* AppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
@@ -301,7 +301,7 @@
 		4C98B2331BF0381C00FB559D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4C98B2321BF0381C00FB559D /* thesis.app */,
+				4C98B2321BF0381C00FB559D /* Hom3Design.app */,
 				4C98B24E1BF0381D00FB559D /* thesisTests.xctest */,
 				4C98B2591BF0381D00FB559D /* thesisUITests.xctest */,
 			);
@@ -532,7 +532,7 @@
 			);
 			name = thesis;
 			productName = thesis;
-			productReference = 4C98B2321BF0381C00FB559D /* thesis.app */;
+			productReference = 4C98B2321BF0381C00FB559D /* Hom3Design.app */;
 			productType = "com.apple.product-type.application";
 		};
 		4C98B24D1BF0381D00FB559D /* thesisTests */ = {
@@ -846,7 +846,7 @@
 				INFOPLIST_FILE = thesis/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = heleny.thesis;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Hom3Design;
 				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
@@ -865,7 +865,7 @@
 				INFOPLIST_FILE = thesis/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = heleny.thesis;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Hom3Design;
 				PROVISIONING_PROFILE = "";
 			};
 			name = Release;

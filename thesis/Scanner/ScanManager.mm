@@ -89,17 +89,17 @@
     Scan *scan = [_scans objectAtIndex: index];
     [_scans removeObjectAtIndex:index];
 
-//    NSString *screenshotPath = [ScanManager getScreenshotPath: scan];
-//    NSString *meshPath = [ScanManager getMeshPath: scan];
-//    NSError *error;
-//    [[NSFileManager defaultManager] removeItemAtPath:screenshotPath error:&error];
-//    if (error) {
-//        NSLog(@"Could not delete screenshot at path %@", screenshotPath);
-//    }
-//    [[NSFileManager defaultManager] removeItemAtPath:meshPath error:&error];
-//    if (error) {
-//        NSLog(@"Could not delete mesh file at path %@", meshPath);
-//    }
+    NSString *screenshotPath = [ScanManager getScreenshotPath: scan];
+    NSString *meshPath = [ScanManager getMeshPath: scan];
+    NSError *error;
+    [[NSFileManager defaultManager] removeItemAtPath:screenshotPath error:&error];
+    if (error) {
+        NSLog(@"Could not delete screenshot at path %@", screenshotPath);
+    }
+    [[NSFileManager defaultManager] removeItemAtPath:meshPath error:&error];
+    if (error) {
+        NSLog(@"Could not delete mesh file at path %@", meshPath);
+    }
     
     [_managedObjectContext deleteObject: scan];
     
@@ -112,17 +112,17 @@
     
     // don't delete in case some of the floorplans have it.......
     
-//    NSString *screenshotPath = [ScanManager getScreenshotPath: scan];
-//    NSString *meshPath = [ScanManager getMeshPath: scan];
-//    NSError *error;
-//    [[NSFileManager defaultManager] removeItemAtPath:screenshotPath error:&error];
-//    if (error) {
-//        NSLog(@"Could not delete screenshot at path %@", screenshotPath);
-//    }
-//    [[NSFileManager defaultManager] removeItemAtPath:meshPath error:&error];
-//    if (error) {
-//        NSLog(@"Could not delete mesh file at path %@", meshPath);
-//    }
+    NSString *screenshotPath = [ScanManager getScreenshotPath: scan];
+    NSString *meshPath = [ScanManager getMeshPath: scan];
+    NSError *error;
+    [[NSFileManager defaultManager] removeItemAtPath:screenshotPath error:&error];
+    if (error) {
+        NSLog(@"Could not delete screenshot at path %@", screenshotPath);
+    }
+    [[NSFileManager defaultManager] removeItemAtPath:meshPath error:&error];
+    if (error) {
+        NSLog(@"Could not delete mesh file at path %@", meshPath);
+    }
     
     [_managedObjectContext deleteObject: scan];
     
