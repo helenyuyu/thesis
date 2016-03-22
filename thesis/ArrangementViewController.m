@@ -88,7 +88,8 @@ NSString *cameraIdentifier = @"camera";
     _scans = [NSMutableArray new];
     // read in saved scans
     if (_fp.scans) {
-        for (SCNNode *node in _fp.scans) {
+        for (SCNNode *origNode in _fp.scans) {
+            SCNNode *node = [origNode clone];
             NSURL *textureURL = [ScanManager getTextureURLFromFilename:node.name];
             if (textureURL) {
                 node.geometry.firstMaterial.diffuse.contents = textureURL;
@@ -111,6 +112,9 @@ NSString *cameraIdentifier = @"camera";
     UITapGestureRecognizer *selectModeTapRecognizer = [UITapGestureRecognizer new];
     [selectModeTapRecognizer addTarget: self action: @selector(selectModeTapGesture:)];
     [_selectModeGestureRecognizers addObject:selectModeTapRecognizer];
+//    UIPanGestureRecognizer *translateRecognizer = [UIPanGestureRecognizer new];
+//    [translateRecognizer addTarget: self action:@selector(translateGesture:)];
+//    [_selectModeGestureRecognizers addObject: translateRecognizer];
     UIPanGestureRecognizer *rotateRecognizer1 = [UIPanGestureRecognizer new];
     [rotateRecognizer1 addTarget: self action:@selector(rotateGesture1:)];
     [_selectModeGestureRecognizers addObject: rotateRecognizer1];
@@ -159,7 +163,6 @@ NSString *cameraIdentifier = @"camera";
 
 -(void) deleteSelected {
     [_scans removeObject: _targetNode];
-    _targetNode.geometry.firstMaterial.transparency = _targetNode.geometry.firstMaterial.transparency*2;
     [_targetNode removeFromParentNode];
     _targetNode = nil;
     [self showButtonsInSelectMode:NO];
@@ -189,7 +192,7 @@ NSString *cameraIdentifier = @"camera";
         if ([self isScan: node]) {
             _targetNode = node;
             _sceneView.gestureRecognizers = _selectModeGestureRecognizers;
-            node.geometry.firstMaterial.transparency = node.geometry.firstMaterial.transparency/2;
+            node.opacity = .5;
             [self showButtonsInSelectMode:YES];
             break;
         }
@@ -209,7 +212,7 @@ NSString *cameraIdentifier = @"camera";
         if (_targetNode == node) {
             _targetNode = nil;
             _sceneView.gestureRecognizers = _defaultGestureRecognizers;
-            node.geometry.firstMaterial.transparency = node.geometry.firstMaterial.transparency*2;
+            node.opacity = 1;
             [self showButtonsInSelectMode:NO];
             return;
         }
@@ -234,6 +237,40 @@ NSString *cameraIdentifier = @"camera";
     _targetNode.eulerAngles = SCNVector3Make(_targetNode.eulerAngles.x, _targetNode.eulerAngles.y + newAngle, _targetNode.eulerAngles.z);
 }
 
+// translate gesture
+//-(void) translateGesture: (UIPanGestureRecognizer*) sender {
+//    CGPoint translation = [sender translationInView:sender.view];
+//    CGPoint location = [sender locationInView:sender.view];
+//    CGPoint secLocation = translation + location;
+//    NSArray<SCNHitTestResult *> * hitResults = [_sceneView hitTest: location options: nil];
+//        for (SCNHitTestResult * result in hitResults) {
+//        SCNNode* node = result.node;
+//        // can translate
+//        if (_targetNode == node) {
+//            SCNVector3 P1 = [_sceneView unprojectPoint: SCNVector3Make(location.x, location.y, 0.0)];
+//            SCNVector3 P2 = [_sceneView unprojectPoint: SCNVector3Make(location.x, location.y, 1.0)];
+//            SCNVector3 Q1 = [_sceneView unprojectPoint: SCNVector3Make(secLocation.x, secLocation.y, 0.0)];
+//            SCNVector3 Q2 = [_sceneView unprojectPoint: SCNVector3Make(secLocation.x, secLocation.y, 1.0)];
+//
+//            float t1 = -P1.z / (P2.z - P1.z);
+//            float t2 = -Q1.z / (Q2.z - Q1.z);
+//            float x1 = P1.x + t1 * (P2.x - P1.x);
+//            float y1 = P1.y + t1 * (P2.y - P1.y);
+//            SCNVector3 P0 = SCNVector3Make(x1, y1,0);
+//            float x2 = Q1.x + t1 * (Q2.x - Q1.x);
+//            float y2 = Q1.y + t1 * (Q2.y - Q1.y);
+//            SCNVector3 Q0 = SCNVector3Make(x2, y2, 0);
+//            SCNVector3 diffR = Q0 - P0;
+//            diffR = diffR*-1;
+//
+//            _targetNode.position = _targetNode.position + diffR
+//            return;
+//        }
+//    }
+//}
+
+
+// rotate gestures
 -(void) rotateGesture2: (UIRotationGestureRecognizer*) sender {
     float newAngle = -sender.rotation*M_PI/180.0;
     _targetNode.eulerAngles = SCNVector3Make(_targetNode.eulerAngles.x, _targetNode.eulerAngles.y + newAngle, _targetNode.eulerAngles.z);
