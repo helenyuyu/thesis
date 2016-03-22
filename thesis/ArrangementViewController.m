@@ -20,6 +20,7 @@
 @property(nonatomic, strong) FloorplanManager *floorplanManager;
 @property(nonatomic, strong) UIBarButtonItem *deleteButton;
 @property(nonatomic, strong) UIBarButtonItem *saveButton;
+@property(nonatomic, strong) UIBarButtonItem *deselectButton;
 @property(nonatomic, strong) NSMutableArray *scans;
 //@property(nonatomic, strong) UIActivityIndicatorView *spinner;
 @end
@@ -45,6 +46,8 @@ NSString *cameraIdentifier = @"camera";
     _saveButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(saveScans)];
     
     _deleteButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemTrash target: self action:@selector(deleteSelected)];
+    
+    _deselectButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemDone target: self action:@selector(deselect)];
     
     [self showButtonsInSelectMode:NO];
 }
@@ -109,12 +112,9 @@ NSString *cameraIdentifier = @"camera";
     _sceneView.gestureRecognizers = _defaultGestureRecognizers;
     
     _selectModeGestureRecognizers = [NSMutableArray new];
-    UITapGestureRecognizer *selectModeTapRecognizer = [UITapGestureRecognizer new];
-    [selectModeTapRecognizer addTarget: self action: @selector(selectModeTapGesture:)];
-    [_selectModeGestureRecognizers addObject:selectModeTapRecognizer];
-//    UIPanGestureRecognizer *translateRecognizer = [UIPanGestureRecognizer new];
-//    [translateRecognizer addTarget: self action:@selector(translateGesture:)];
-//    [_selectModeGestureRecognizers addObject: translateRecognizer];
+    UITapGestureRecognizer *translateRecognizer = [UITapGestureRecognizer new];
+    [translateRecognizer addTarget: self action: @selector(translateGesture:)];
+    [_selectModeGestureRecognizers addObject:translateRecognizer];
     UIPanGestureRecognizer *rotateRecognizer1 = [UIPanGestureRecognizer new];
     [rotateRecognizer1 addTarget: self action:@selector(rotateGesture1:)];
     [_selectModeGestureRecognizers addObject: rotateRecognizer1];
@@ -169,12 +169,19 @@ NSString *cameraIdentifier = @"camera";
     _sceneView.gestureRecognizers = _defaultGestureRecognizers;
 }
 
+-(void) deselect {
+    _targetNode.opacity = 1;
+    _targetNode = nil;
+    _sceneView.gestureRecognizers = _defaultGestureRecognizers;
+    [self showButtonsInSelectMode:NO];
+}
+
 -(void) showButtonsInSelectMode: (BOOL) selectMode {
     if (!selectMode) {
         self.navigationItem.rightBarButtonItems = @[_saveButton, _addButton];
     }
     else {
-        self.navigationItem.rightBarButtonItems = @[_deleteButton];
+        self.navigationItem.rightBarButtonItems = @[_deselectButton, _deleteButton];
     }
 }
 
@@ -199,36 +206,52 @@ NSString *cameraIdentifier = @"camera";
     }
 }
 
+// allow deselect as well, probably won't use
+//-(void) selectModeTapGesture: (UITapGestureRecognizer*) recognizer {
+//    CGPoint location = [recognizer locationInView:_sceneView];
+//    
+//    NSArray<SCNHitTestResult *> * hitResults = [_sceneView hitTest: location options: nil];
+//    SCNVector3 planeCoords;
+//    BOOL hitPlane = NO;
+//    for (SCNHitTestResult * result in hitResults) {
+//        SCNNode* node = result.node;
+//        // deselect
+//        if (_targetNode == node) {
+//            _targetNode = nil;
+//            _sceneView.gestureRecognizers = _defaultGestureRecognizers;
+//            node.opacity = 1;
+//            [self showButtonsInSelectMode:NO];
+//            return;
+//        }
+//        else if ([node.name isEqualToString:planeIdentifier]) { // trying to translate
+//            planeCoords = result.localCoordinates;
+//            hitPlane = YES;
+//        }
+//    }
+//    // just do plain translation
+//    if (hitPlane) {
+//        // restrict the translation to the bounds of the plane
+//        float xcoord = planeCoords.x;
+//        float zcoord = -planeCoords.y;
+//        _targetNode.position = SCNVector3Make(xcoord, _targetNode.position.y, zcoord);
+//    }
+//}
 
--(void) selectModeTapGesture: (UITapGestureRecognizer*) recognizer {
+// only translation
+-(void) translateGesture: (UITapGestureRecognizer*) recognizer {
     CGPoint location = [recognizer locationInView:_sceneView];
     
     NSArray<SCNHitTestResult *> * hitResults = [_sceneView hitTest: location options: nil];
-    SCNVector3 planeCoords;
-    BOOL hitPlane = NO;
     for (SCNHitTestResult * result in hitResults) {
         SCNNode* node = result.node;
-        // deselect
-        if (_targetNode == node) {
-            _targetNode = nil;
-            _sceneView.gestureRecognizers = _defaultGestureRecognizers;
-            node.opacity = 1;
-            [self showButtonsInSelectMode:NO];
-            return;
+        if ([node.name isEqualToString:planeIdentifier]) {
+            float xcoord = result.localCoordinates.x;
+            float zcoord = -result.localCoordinates.y;
+            _targetNode.position = SCNVector3Make(xcoord, _targetNode.position.y, zcoord);
         }
-        else if ([node.name isEqualToString:planeIdentifier]) { // trying to translate
-            planeCoords = result.localCoordinates;
-            hitPlane = YES;
-        }
-    }
-    // just do plain translation
-    if (hitPlane) {
-        // restrict the translation to the bounds of the plane
-        float xcoord = planeCoords.x;
-        float zcoord = -planeCoords.y;
-        _targetNode.position = SCNVector3Make(xcoord, _targetNode.position.y, zcoord);
     }
 }
+
 
 // rotate gesture
 -(void) rotateGesture1: (UIPanGestureRecognizer*) sender {
@@ -237,37 +260,6 @@ NSString *cameraIdentifier = @"camera";
     _targetNode.eulerAngles = SCNVector3Make(_targetNode.eulerAngles.x, _targetNode.eulerAngles.y + newAngle, _targetNode.eulerAngles.z);
 }
 
-// translate gesture
-//-(void) translateGesture: (UIPanGestureRecognizer*) sender {
-//    CGPoint translation = [sender translationInView:sender.view];
-//    CGPoint location = [sender locationInView:sender.view];
-//    CGPoint secLocation = translation + location;
-//    NSArray<SCNHitTestResult *> * hitResults = [_sceneView hitTest: location options: nil];
-//        for (SCNHitTestResult * result in hitResults) {
-//        SCNNode* node = result.node;
-//        // can translate
-//        if (_targetNode == node) {
-//            SCNVector3 P1 = [_sceneView unprojectPoint: SCNVector3Make(location.x, location.y, 0.0)];
-//            SCNVector3 P2 = [_sceneView unprojectPoint: SCNVector3Make(location.x, location.y, 1.0)];
-//            SCNVector3 Q1 = [_sceneView unprojectPoint: SCNVector3Make(secLocation.x, secLocation.y, 0.0)];
-//            SCNVector3 Q2 = [_sceneView unprojectPoint: SCNVector3Make(secLocation.x, secLocation.y, 1.0)];
-//
-//            float t1 = -P1.z / (P2.z - P1.z);
-//            float t2 = -Q1.z / (Q2.z - Q1.z);
-//            float x1 = P1.x + t1 * (P2.x - P1.x);
-//            float y1 = P1.y + t1 * (P2.y - P1.y);
-//            SCNVector3 P0 = SCNVector3Make(x1, y1,0);
-//            float x2 = Q1.x + t1 * (Q2.x - Q1.x);
-//            float y2 = Q1.y + t1 * (Q2.y - Q1.y);
-//            SCNVector3 Q0 = SCNVector3Make(x2, y2, 0);
-//            SCNVector3 diffR = Q0 - P0;
-//            diffR = diffR*-1;
-//
-//            _targetNode.position = _targetNode.position + diffR
-//            return;
-//        }
-//    }
-//}
 
 
 // rotate gestures
