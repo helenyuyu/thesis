@@ -27,8 +27,8 @@
 
     SCNNode *cameraNode = _sceneView.pointOfView;
     SCNVector3 position = cameraNode.position;
-    cameraNode.rotation = SCNVector4Make(1, 0, -.1, M_PI); //hard coded oops
-    cameraNode.position = SCNVector3Make(0, position.y, -position.z);
+    cameraNode.rotation = SCNVector4Make(1, 0, 0, M_PI); //hard coded oops
+    cameraNode.position = SCNVector3Make(position.x, position.y, -position.z);
     
     _sceneView.autoenablesDefaultLighting = YES;
     

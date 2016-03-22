@@ -75,7 +75,7 @@ NSString *cameraIdentifier = @"camera";
     SCNCamera *camera = [SCNCamera new];
     SCNNode *cameraNode = [SCNNode new];
     cameraNode.camera = camera;
-    cameraNode.position = SCNVector3Make(0, MAX(width, height), 0);
+    cameraNode.position = SCNVector3Make(0, MAX(width, height)*2, 0);
     cameraNode.name = cameraIdentifier;
     
     SCNLookAtConstraint* constraint = [SCNLookAtConstraint lookAtConstraintWithTarget:planeNode];
