@@ -49,7 +49,7 @@ NSString *cameraIdentifier = @"camera";
     
     _deselectButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemDone target: self action:@selector(deselect)];
     
-    [self showButtonsInSelectMode:NO];
+    [self switchToSelectMode:NO];
 }
 
 #pragma mark - set up
@@ -93,6 +93,7 @@ NSString *cameraIdentifier = @"camera";
     if (_fp.scans) {
         for (SCNNode *origNode in _fp.scans) {
             SCNNode *node = [origNode clone];
+            //node.opacity = 1; // probably unecessary
             NSURL *textureURL = [ScanManager getTextureURLFromFilename:node.name];
             if (textureURL) {
                 node.geometry.firstMaterial.diffuse.contents = textureURL;
@@ -109,7 +110,7 @@ NSString *cameraIdentifier = @"camera";
     [tapRecognizer addTarget: self action: @selector(tapGesture:)];
     [_defaultGestureRecognizers addObject: tapRecognizer];
     [_defaultGestureRecognizers addObjectsFromArray:_sceneView.gestureRecognizers];
-    _sceneView.gestureRecognizers = _defaultGestureRecognizers;
+    
     
     _selectModeGestureRecognizers = [NSMutableArray new];
     UITapGestureRecognizer *translateRecognizer = [UITapGestureRecognizer new];
@@ -164,27 +165,28 @@ NSString *cameraIdentifier = @"camera";
 -(void) deleteSelected {
     [_scans removeObject: _targetNode];
     [_targetNode removeFromParentNode];
-    _targetNode = nil;
-    [self showButtonsInSelectMode:NO];
-    _sceneView.gestureRecognizers = _defaultGestureRecognizers;
+    [self switchToSelectMode:NO];
 }
 
 -(void) deselect {
-    _targetNode.opacity = 1;
-    _targetNode = nil;
-    _sceneView.gestureRecognizers = _defaultGestureRecognizers;
-    [self showButtonsInSelectMode:NO];
+    [self switchToSelectMode:NO];
 }
 
--(void) showButtonsInSelectMode: (BOOL) selectMode {
-    if (!selectMode) {
-        self.navigationItem.rightBarButtonItems = @[_saveButton, _addButton];
+-(void) switchToSelectMode: (BOOL) selectMode {
+    if (selectMode) {
+        self.navigationItem.rightBarButtonItems = @[_deselectButton, _deleteButton];
+        _sceneView.gestureRecognizers = _selectModeGestureRecognizers;
+        _targetNode.opacity = .5;
     }
     else {
-        self.navigationItem.rightBarButtonItems = @[_deselectButton, _deleteButton];
+        self.navigationItem.rightBarButtonItems = @[_saveButton, _addButton];
+        _sceneView.gestureRecognizers = _defaultGestureRecognizers;
+        if (_targetNode) {
+            _targetNode.opacity = 1;
+            _targetNode = nil;
+        }
     }
 }
-
 
 
 #pragma mark - gestures
@@ -198,9 +200,7 @@ NSString *cameraIdentifier = @"camera";
         // found first best match
         if ([self isScan: node]) {
             _targetNode = node;
-            _sceneView.gestureRecognizers = _selectModeGestureRecognizers;
-            node.opacity = .5;
-            [self showButtonsInSelectMode:YES];
+            [self switchToSelectMode:YES];
             break;
         }
     }
@@ -248,6 +248,7 @@ NSString *cameraIdentifier = @"camera";
             float xcoord = result.localCoordinates.x;
             float zcoord = -result.localCoordinates.y;
             _targetNode.position = SCNVector3Make(xcoord, _targetNode.position.y, zcoord);
+            return;
         }
     }
 }
