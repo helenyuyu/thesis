@@ -57,6 +57,7 @@
 		4CB43AA21C9F2A250057B76D /* Floorplan.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB43A9E1C9F2A250057B76D /* Floorplan.m */; };
 		4CB43AA31C9F2A250057B76D /* Floorplan+CoreDataProperties.h in Headers */ = {isa = PBXBuildFile; fileRef = 4CB43A9F1C9F2A250057B76D /* Floorplan+CoreDataProperties.h */; };
 		4CB43AA41C9F2A250057B76D /* Floorplan+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB43AA01C9F2A250057B76D /* Floorplan+CoreDataProperties.m */; };
+		4CB43AA61CA218BC0057B76D /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4CB43AA51CA218BC0057B76D /* Launch Screen.storyboard */; };
 		4CBAE2FA1C4D9773003A0789 /* Structure.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CBAE2F91C4D9773003A0789 /* Structure.framework */; };
 		4CBAE3321C5451E3003A0789 /* CalibrationOverlay.h in Headers */ = {isa = PBXBuildFile; fileRef = 4CBAE3021C5451E3003A0789 /* CalibrationOverlay.h */; };
 		4CBAE3331C5451E3003A0789 /* CalibrationOverlay.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4CBAE3031C5451E3003A0789 /* CalibrationOverlay.mm */; };
@@ -168,6 +169,7 @@
 		4CB43A9E1C9F2A250057B76D /* Floorplan.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Floorplan.m; path = thesis/Floorplan.m; sourceTree = "<group>"; };
 		4CB43A9F1C9F2A250057B76D /* Floorplan+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Floorplan+CoreDataProperties.h"; path = "thesis/Floorplan+CoreDataProperties.h"; sourceTree = "<group>"; };
 		4CB43AA01C9F2A250057B76D /* Floorplan+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "Floorplan+CoreDataProperties.m"; path = "thesis/Floorplan+CoreDataProperties.m"; sourceTree = "<group>"; };
+		4CB43AA51CA218BC0057B76D /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		4CBAE2F91C4D9773003A0789 /* Structure.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Structure.framework; sourceTree = "<group>"; };
 		4CBAE3021C5451E3003A0789 /* CalibrationOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalibrationOverlay.h; sourceTree = "<group>"; };
 		4CBAE3031C5451E3003A0789 /* CalibrationOverlay.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CalibrationOverlay.mm; sourceTree = "<group>"; };
@@ -451,6 +453,7 @@
 			children = (
 				4CBAE30E1C5451E3003A0789 /* ViewController.xib */,
 				4CBAE31F1C5451E3003A0789 /* MeshView_iPhone.xib */,
+				4CB43AA51CA218BC0057B76D /* Launch Screen.storyboard */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -625,6 +628,7 @@
 				4C8555EF1C58896B00FBDD5C /* sofa.png in Resources */,
 				4C8555FB1C588C7C00FBDD5C /* delete_sign_filled.png in Resources */,
 				4CBAE3441C5451E3003A0789 /* Splash.png in Resources */,
+				4CB43AA61CA218BC0057B76D /* Launch Screen.storyboard in Resources */,
 				4CBAE3411C5451E3003A0789 /* Default@2x.png in Resources */,
 				4C8555EB1C5887C300FBDD5C /* home.png in Resources */,
 				4C98B2451BF0381C00FB559D /* Assets.xcassets in Resources */,

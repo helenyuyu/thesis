@@ -22,7 +22,6 @@
 @property(nonatomic, strong) UIBarButtonItem *saveButton;
 @property(nonatomic, strong) UIBarButtonItem *deselectButton;
 @property(nonatomic, strong) NSMutableArray *scans;
-//@property(nonatomic, strong) UIActivityIndicatorView *spinner;
 @end
 
 @implementation ArrangementViewController
@@ -206,38 +205,7 @@ NSString *cameraIdentifier = @"camera";
     }
 }
 
-// allow deselect as well, probably won't use
-//-(void) selectModeTapGesture: (UITapGestureRecognizer*) recognizer {
-//    CGPoint location = [recognizer locationInView:_sceneView];
-//    
-//    NSArray<SCNHitTestResult *> * hitResults = [_sceneView hitTest: location options: nil];
-//    SCNVector3 planeCoords;
-//    BOOL hitPlane = NO;
-//    for (SCNHitTestResult * result in hitResults) {
-//        SCNNode* node = result.node;
-//        // deselect
-//        if (_targetNode == node) {
-//            _targetNode = nil;
-//            _sceneView.gestureRecognizers = _defaultGestureRecognizers;
-//            node.opacity = 1;
-//            [self showButtonsInSelectMode:NO];
-//            return;
-//        }
-//        else if ([node.name isEqualToString:planeIdentifier]) { // trying to translate
-//            planeCoords = result.localCoordinates;
-//            hitPlane = YES;
-//        }
-//    }
-//    // just do plain translation
-//    if (hitPlane) {
-//        // restrict the translation to the bounds of the plane
-//        float xcoord = planeCoords.x;
-//        float zcoord = -planeCoords.y;
-//        _targetNode.position = SCNVector3Make(xcoord, _targetNode.position.y, zcoord);
-//    }
-//}
 
-// only translation
 -(void) translateGesture: (UITapGestureRecognizer*) recognizer {
     CGPoint location = [recognizer locationInView:_sceneView];
     
@@ -263,7 +231,7 @@ NSString *cameraIdentifier = @"camera";
 
 
 
-// rotate gestures
+// 2nd rotate gesture
 -(void) rotateGesture2: (UIRotationGestureRecognizer*) sender {
     float newAngle = -sender.rotation*M_PI/180.0;
     _targetNode.eulerAngles = SCNVector3Make(_targetNode.eulerAngles.x, _targetNode.eulerAngles.y + newAngle, _targetNode.eulerAngles.z);
