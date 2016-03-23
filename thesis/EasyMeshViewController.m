@@ -42,11 +42,34 @@
 
 
 -(IBAction) deleteScan:(id) sender {
-    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    ScanManager *scanManager = appDelegate.scanManager;
-    [scanManager deleteScan: _scan];
-    // remove view from stack
-    [self.navigationController popViewControllerAnimated:YES];
+        UIAlertController *alertController = [UIAlertController
+                                              alertControllerWithTitle:@"Delete scan?"
+                                              message:nil
+                                              preferredStyle:UIAlertControllerStyleAlert];
+    
+        UIAlertAction *cancelAction = [UIAlertAction
+                                       actionWithTitle:@"Cancel"
+                                       style:UIAlertActionStyleCancel
+                                       handler:^(UIAlertAction *action)
+                                       {
+                                       }];
+        
+        UIAlertAction *okAction = [UIAlertAction
+                                   actionWithTitle:@"OK"
+                                   style:UIAlertActionStyleDefault
+                                   handler:^(UIAlertAction *action)
+                                   {
+                                       AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+                                       ScanManager *scanManager = appDelegate.scanManager;
+                                       [scanManager deleteScan: _scan];
+                                       // remove view from stack
+                                       [self.navigationController popViewControllerAnimated:YES];
+                                   }];
+        [alertController addAction: okAction];
+        [alertController addAction: cancelAction];
+        
+        [self presentViewController:alertController animated:YES completion:nil];
+
     
 }
 

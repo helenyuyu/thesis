@@ -162,9 +162,32 @@ NSString *cameraIdentifier = @"camera";
 }
 
 -(void) deleteSelected {
-    [_scans removeObject: _targetNode];
-    [_targetNode removeFromParentNode];
-    [self switchToSelectMode:NO];
+    UIAlertController *alertController = [UIAlertController
+                                          alertControllerWithTitle:@"Remove from arrangement?"
+                                          message:nil
+                                          preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *cancelAction = [UIAlertAction
+                                   actionWithTitle:@"Cancel"
+                                   style:UIAlertActionStyleCancel
+                                   handler:^(UIAlertAction *action)
+                                   {
+                                   }];
+    
+    UIAlertAction *okAction = [UIAlertAction
+                               actionWithTitle:@"OK"
+                               style:UIAlertActionStyleDefault
+                               handler:^(UIAlertAction *action)
+                               {
+                                   [_scans removeObject: _targetNode];
+                                   [_targetNode removeFromParentNode];
+                                   [self switchToSelectMode:NO];
+                               }];
+    [alertController addAction: okAction];
+    [alertController addAction: cancelAction];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
+    
 }
 
 -(void) deselect {
