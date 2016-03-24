@@ -90,16 +90,10 @@ NSString *cameraIdentifier = @"camera";
 -(void) loadScans {
     _scans = [NSMutableArray new];
     // read in saved scans
-    if (_fp.scans) {
-        for (SCNNode *origNode in _fp.scans) {
-            SCNNode *node = [origNode clone];
-            //node.opacity = 1; // probably unecessary
-            NSURL *textureURL = [ScanManager getTextureURLFromFilename:node.name];
-            if (textureURL) {
-                node.geometry.firstMaterial.diffuse.contents = textureURL;
-            }
-            [_sceneView.scene.rootNode addChildNode:node];
-            [_scans addObject: node];
+    if (_fp.scansData) {
+        NSArray *scansFromJson = [NSJSONSerialization JSONObjectWithData:_fp.scansData options:0 error:nil];
+        for (NSDictionary *node in scansFromJson) {
+            [self addSimpleNodeToFloorplan:node];
         }
     }
 }
@@ -135,7 +129,6 @@ NSString *cameraIdentifier = @"camera";
     NSURL *meshURL = [ScanManager getMeshURL: scan];
     SCNScene *scene = [SCNScene sceneWithURL: meshURL options: nil error: nil];
     SCNNode *childNode = scene.rootNode.childNodes[0];
-    [_sceneView.scene.rootNode addChildNode:childNode];
     SCNVector3 min = SCNVector3Zero;
     SCNVector3 max = SCNVector3Zero;
     [childNode getBoundingBoxMin:&min max:&max];
@@ -144,16 +137,37 @@ NSString *cameraIdentifier = @"camera";
     childNode.position = SCNVector3Make(0, (max.y), 0);
     childNode.name = scan.meshFilename;
     [_scans addObject: childNode];
+    [_sceneView.scene.rootNode addChildNode:childNode];
+}
+
+
+-(void) addSimpleNodeToFloorplan: (NSDictionary *) node {
+    NSString *filename = node[@"filename"];
+    NSURL *meshURL = [ScanManager getMeshURLFromFilename:filename];
+    SCNScene *scene = [SCNScene sceneWithURL: meshURL options: nil error: nil];
+    SCNNode *childNode = scene.rootNode.childNodes[0];
+    childNode.position = SCNVector3Make([node[@"px"] floatValue], [node[@"py"] floatValue], [node[@"pz"] floatValue]);
+    childNode.eulerAngles = SCNVector3Make([node[@"ex"] floatValue], [node[@"ey"] floatValue], [node[@"ez"] floatValue]);
+    SCNVector3 min = SCNVector3Zero;
+    SCNVector3 max = SCNVector3Zero;
+    [childNode getBoundingBoxMin:&min max:&max];
+    childNode.pivot = SCNMatrix4MakeTranslation((max.x - min.x)/2, 0, (max.z - min.z)/2);
+    childNode.name = filename;
+    [_scans addObject: childNode];
+    [_sceneView.scene.rootNode addChildNode:childNode];
 }
 
 
 -(void) saveScans {
-    NSMutableArray *clonedScans = [NSMutableArray new];
+    NSMutableArray *simpleNodes = [NSMutableArray new];
     for (SCNNode *node in _scans) {
-        SCNNode *clone = [node clone];
-        [clonedScans addObject: clone];
+        NSDictionary *dict = @{@"filename": node.name,
+                               @"px":@(node.position.x), @"py":@(node.position.y), @"pz":@(node.position.z),
+                               @"ex":@(node.eulerAngles.x), @"ey":@(node.eulerAngles.y), @"ez":@(node.eulerAngles.z)};
+        [simpleNodes addObject: dict];
     }
-    _fp.scans = clonedScans;
+
+    _fp.scansData = [NSJSONSerialization dataWithJSONObject:simpleNodes options:NSJSONWritingPrettyPrinted error:nil];
     [_floorplanManager saveChanges];
     UIAlertController *alertController = [UIAlertController
                                           alertControllerWithTitle:@"Arrangement saved"
@@ -254,7 +268,7 @@ NSString *cameraIdentifier = @"camera";
 // rotate gesture
 -(void) rotateGesture1: (UIPanGestureRecognizer*) sender {
     CGPoint translation = [sender translationInView:sender.view];
-    float newAngle = (float)(translation.x)*(float)(M_PI)/180.0/100;
+    float newAngle = ((float) translation.x)*(float)(M_PI)/180.0/100;
     _targetNode.eulerAngles = SCNVector3Make(_targetNode.eulerAngles.x, _targetNode.eulerAngles.y + newAngle, _targetNode.eulerAngles.z);
 }
 

@@ -53,11 +53,11 @@
 		4CA5041E1C72B00600F5CF6A /* FloorplanTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CA5041C1C72B00600F5CF6A /* FloorplanTableViewCell.m */; };
 		4CA504461C78F93D00F5CF6A /* EasyMeshViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 4CA504441C78F93D00F5CF6A /* EasyMeshViewController.h */; };
 		4CA504471C78F93D00F5CF6A /* EasyMeshViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CA504451C78F93D00F5CF6A /* EasyMeshViewController.m */; };
-		4CB43AA11C9F2A250057B76D /* Floorplan.h in Headers */ = {isa = PBXBuildFile; fileRef = 4CB43A9D1C9F2A250057B76D /* Floorplan.h */; };
-		4CB43AA21C9F2A250057B76D /* Floorplan.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB43A9E1C9F2A250057B76D /* Floorplan.m */; };
-		4CB43AA31C9F2A250057B76D /* Floorplan+CoreDataProperties.h in Headers */ = {isa = PBXBuildFile; fileRef = 4CB43A9F1C9F2A250057B76D /* Floorplan+CoreDataProperties.h */; };
-		4CB43AA41C9F2A250057B76D /* Floorplan+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB43AA01C9F2A250057B76D /* Floorplan+CoreDataProperties.m */; };
 		4CB43AA61CA218BC0057B76D /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4CB43AA51CA218BC0057B76D /* Launch Screen.storyboard */; };
+		4CB43AAF1CA3973E0057B76D /* Floorplan+CoreDataProperties.h in Headers */ = {isa = PBXBuildFile; fileRef = 4CB43AAB1CA3973E0057B76D /* Floorplan+CoreDataProperties.h */; };
+		4CB43AB01CA3973E0057B76D /* Floorplan+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB43AAC1CA3973E0057B76D /* Floorplan+CoreDataProperties.m */; };
+		4CB43AB11CA3973E0057B76D /* Floorplan.h in Headers */ = {isa = PBXBuildFile; fileRef = 4CB43AAD1CA3973E0057B76D /* Floorplan.h */; };
+		4CB43AB21CA3973E0057B76D /* Floorplan.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CB43AAE1CA3973E0057B76D /* Floorplan.m */; };
 		4CBAE2FA1C4D9773003A0789 /* Structure.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CBAE2F91C4D9773003A0789 /* Structure.framework */; };
 		4CBAE3321C5451E3003A0789 /* CalibrationOverlay.h in Headers */ = {isa = PBXBuildFile; fileRef = 4CBAE3021C5451E3003A0789 /* CalibrationOverlay.h */; };
 		4CBAE3331C5451E3003A0789 /* CalibrationOverlay.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4CBAE3031C5451E3003A0789 /* CalibrationOverlay.mm */; };
@@ -165,11 +165,11 @@
 		4CA5041C1C72B00600F5CF6A /* FloorplanTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FloorplanTableViewCell.m; sourceTree = "<group>"; };
 		4CA504441C78F93D00F5CF6A /* EasyMeshViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyMeshViewController.h; sourceTree = "<group>"; };
 		4CA504451C78F93D00F5CF6A /* EasyMeshViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EasyMeshViewController.m; sourceTree = "<group>"; };
-		4CB43A9D1C9F2A250057B76D /* Floorplan.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Floorplan.h; path = thesis/Floorplan.h; sourceTree = "<group>"; };
-		4CB43A9E1C9F2A250057B76D /* Floorplan.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Floorplan.m; path = thesis/Floorplan.m; sourceTree = "<group>"; };
-		4CB43A9F1C9F2A250057B76D /* Floorplan+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Floorplan+CoreDataProperties.h"; path = "thesis/Floorplan+CoreDataProperties.h"; sourceTree = "<group>"; };
-		4CB43AA01C9F2A250057B76D /* Floorplan+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "Floorplan+CoreDataProperties.m"; path = "thesis/Floorplan+CoreDataProperties.m"; sourceTree = "<group>"; };
 		4CB43AA51CA218BC0057B76D /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		4CB43AAB1CA3973E0057B76D /* Floorplan+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Floorplan+CoreDataProperties.h"; path = "thesis/Floorplan+CoreDataProperties.h"; sourceTree = "<group>"; };
+		4CB43AAC1CA3973E0057B76D /* Floorplan+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "Floorplan+CoreDataProperties.m"; path = "thesis/Floorplan+CoreDataProperties.m"; sourceTree = "<group>"; };
+		4CB43AAD1CA3973E0057B76D /* Floorplan.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Floorplan.h; path = thesis/Floorplan.h; sourceTree = "<group>"; };
+		4CB43AAE1CA3973E0057B76D /* Floorplan.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Floorplan.m; path = thesis/Floorplan.m; sourceTree = "<group>"; };
 		4CBAE2F91C4D9773003A0789 /* Structure.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Structure.framework; sourceTree = "<group>"; };
 		4CBAE3021C5451E3003A0789 /* CalibrationOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalibrationOverlay.h; sourceTree = "<group>"; };
 		4CBAE3031C5451E3003A0789 /* CalibrationOverlay.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CalibrationOverlay.mm; sourceTree = "<group>"; };
@@ -275,10 +275,10 @@
 		4C8556061C61D36500FBDD5C /* Core Data */ = {
 			isa = PBXGroup;
 			children = (
-				4CB43A9D1C9F2A250057B76D /* Floorplan.h */,
-				4CB43A9E1C9F2A250057B76D /* Floorplan.m */,
-				4CB43A9F1C9F2A250057B76D /* Floorplan+CoreDataProperties.h */,
-				4CB43AA01C9F2A250057B76D /* Floorplan+CoreDataProperties.m */,
+				4CB43AAB1CA3973E0057B76D /* Floorplan+CoreDataProperties.h */,
+				4CB43AAC1CA3973E0057B76D /* Floorplan+CoreDataProperties.m */,
+				4CB43AAD1CA3973E0057B76D /* Floorplan.h */,
+				4CB43AAE1CA3973E0057B76D /* Floorplan.m */,
 				4CD03BD91C6863F200D50FB2 /* Scan+CoreDataProperties.h */,
 				4CD03BDA1C6863F200D50FB2 /* Scan+CoreDataProperties.m */,
 				4C8556001C61D34A00FBDD5C /* Scan.h */,
@@ -509,9 +509,9 @@
 				4CBAE3361C5451E3003A0789 /* CustomUIKitStyles.h in Headers */,
 				4CBB1D201C3C6D1800BE22ED /* FloorplanManager.h in Headers */,
 				4C8555E21C581C5900FBDD5C /* ScanCollectionViewController.h in Headers */,
+				4CB43AAF1CA3973E0057B76D /* Floorplan+CoreDataProperties.h in Headers */,
 				4CBAE3481C5451E3003A0789 /* MeshRenderer.h in Headers */,
-				4CB43AA31C9F2A250057B76D /* Floorplan+CoreDataProperties.h in Headers */,
-				4CB43AA11C9F2A250057B76D /* Floorplan.h in Headers */,
+				4CB43AB11CA3973E0057B76D /* Floorplan.h in Headers */,
 				4CA5041D1C72B00600F5CF6A /* FloorplanTableViewCell.h in Headers */,
 				4CBAE3381C5451E3003A0789 /* EAGLView.h in Headers */,
 			);
@@ -686,6 +686,7 @@
 				4C98B2731BF03B2300FB559D /* FloorplanTableViewController.m in Sources */,
 				4CBB1D261C3C7ABF00BE22ED /* thesis.xcdatamodeld in Sources */,
 				4C85560A1C61D3B700FBDD5C /* ScanManager.mm in Sources */,
+				4CB43AB21CA3973E0057B76D /* Floorplan.m in Sources */,
 				4C8555E31C581C5900FBDD5C /* ScanCollectionViewController.m in Sources */,
 				4CBB1D1D1C3B0CF100BE22ED /* BJImageCropper.m in Sources */,
 				4CBAE34D1C5451E3003A0789 /* MeshViewController.mm in Sources */,
@@ -694,8 +695,7 @@
 				4CBAE3571C5451E3003A0789 /* ViewController+SLAM.mm in Sources */,
 				4CBB1D211C3C6D1800BE22ED /* FloorplanManager.m in Sources */,
 				4CBAE3391C5451E3003A0789 /* EAGLView.mm in Sources */,
-				4CB43AA21C9F2A250057B76D /* Floorplan.m in Sources */,
-				4CB43AA41C9F2A250057B76D /* Floorplan+CoreDataProperties.m in Sources */,
+				4CB43AB01CA3973E0057B76D /* Floorplan+CoreDataProperties.m in Sources */,
 				4CFB5A931BF1CECA00884D38 /* FloorplanViewController.mm in Sources */,
 				4CBAE3331C5451E3003A0789 /* CalibrationOverlay.mm in Sources */,
 			);
