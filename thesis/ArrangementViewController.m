@@ -92,8 +92,8 @@ NSString *cameraIdentifier = @"camera";
     // read in saved scans
     if (_fp.scansData) {
         NSArray *scansFromJson = [NSJSONSerialization JSONObjectWithData:_fp.scansData options:0 error:nil];
-        for (NSDictionary *node in scansFromJson) {
-            [self addSimpleNodeToFloorplan:node];
+        for (NSDictionary *nodeDict in scansFromJson) {
+            [self addNodeDictToFloorplan:nodeDict];
         }
     }
 }
@@ -141,13 +141,13 @@ NSString *cameraIdentifier = @"camera";
 }
 
 
--(void) addSimpleNodeToFloorplan: (NSDictionary *) node {
-    NSString *filename = node[@"filename"];
+-(void) addNodeDictToFloorplan: (NSDictionary *) nodeDict {
+    NSString *filename = nodeDict[@"filename"];
     NSURL *meshURL = [ScanManager getMeshURLFromFilename:filename];
     SCNScene *scene = [SCNScene sceneWithURL: meshURL options: nil error: nil];
     SCNNode *childNode = scene.rootNode.childNodes[0];
-    childNode.position = SCNVector3Make([node[@"px"] floatValue], [node[@"py"] floatValue], [node[@"pz"] floatValue]);
-    childNode.eulerAngles = SCNVector3Make([node[@"ex"] floatValue], [node[@"ey"] floatValue], [node[@"ez"] floatValue]);
+    childNode.position = SCNVector3Make([nodeDict[@"px"] floatValue], [nodeDict[@"py"] floatValue], [nodeDict[@"pz"] floatValue]);
+    childNode.eulerAngles = SCNVector3Make([nodeDict[@"ex"] floatValue], [nodeDict[@"ey"] floatValue], [nodeDict[@"ez"] floatValue]);
     SCNVector3 min = SCNVector3Zero;
     SCNVector3 max = SCNVector3Zero;
     [childNode getBoundingBoxMin:&min max:&max];
@@ -159,15 +159,15 @@ NSString *cameraIdentifier = @"camera";
 
 
 -(void) saveScans {
-    NSMutableArray *simpleNodes = [NSMutableArray new];
+    NSMutableArray *nodeDicts = [NSMutableArray new];
     for (SCNNode *node in _scans) {
         NSDictionary *dict = @{@"filename": node.name,
                                @"px":@(node.position.x), @"py":@(node.position.y), @"pz":@(node.position.z),
                                @"ex":@(node.eulerAngles.x), @"ey":@(node.eulerAngles.y), @"ez":@(node.eulerAngles.z)};
-        [simpleNodes addObject: dict];
+        [nodeDicts addObject: dict];
     }
 
-    _fp.scansData = [NSJSONSerialization dataWithJSONObject:simpleNodes options:NSJSONWritingPrettyPrinted error:nil];
+    _fp.scansData = [NSJSONSerialization dataWithJSONObject:nodeDicts options:NSJSONWritingPrettyPrinted error:nil];
     [_floorplanManager saveChanges];
     UIAlertController *alertController = [UIAlertController
                                           alertControllerWithTitle:@"Arrangement saved"
