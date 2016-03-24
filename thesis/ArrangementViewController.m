@@ -74,17 +74,19 @@ NSString *cameraIdentifier = @"camera";
     fpMaterial.diffuse.contents = [UIImage imageWithData:_fp.image];
     planeGeometry.firstMaterial = fpMaterial;
     
+    SCNNode *dummyNode = [SCNNode new];
+    dummyNode.position = SCNVector3Make(0, -100, 0);
+    
     SCNCamera *camera = [SCNCamera new];
     SCNNode *cameraNode = [SCNNode new];
     cameraNode.camera = camera;
-    cameraNode.position = SCNVector3Make(0, MAX(width, height)*2, 0);
+    cameraNode.position = SCNVector3Make(0, MAX(width, height), 0);
+    
+    cameraNode.eulerAngles = SCNVector3Make(-M_PI_2, 0, 0);
     cameraNode.name = cameraIdentifier;
     
-    SCNLookAtConstraint* constraint = [SCNLookAtConstraint lookAtConstraintWithTarget:planeNode];
-    constraint.gimbalLockEnabled = YES;
-    cameraNode.constraints = @[constraint];
+    [_sceneView.scene.rootNode addChildNode:cameraNode];
 
-    [scene.rootNode addChildNode:cameraNode];
 }
 
 -(void) loadScans {
@@ -285,6 +287,10 @@ NSString *cameraIdentifier = @"camera";
 
 -(void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"addModelToFloorplan"]) {
+//        SCNNode *pov = _sceneView.pointOfView;
+//        NSLog(@"euler angles: %f %f %f",pov.eulerAngles.x, pov.eulerAngles.y, pov.eulerAngles.z);
+//        NSLog(@"position: %f %f %f", pov.position.x, pov.position.y, pov.position.z);
+
         // dumb hack oops
         UINavigationController *nav = (UINavigationController*) segue.destinationViewController;
         ChooseScanViewController *dest = nav.viewControllers.firstObject;
