@@ -83,6 +83,7 @@ NSString *cameraIdentifier = @"camera";
     SCNLookAtConstraint* constraint = [SCNLookAtConstraint lookAtConstraintWithTarget:planeNode];
     constraint.gimbalLockEnabled = YES;
     cameraNode.constraints = @[constraint];
+
     [scene.rootNode addChildNode:cameraNode];
 }
 
@@ -147,7 +148,12 @@ NSString *cameraIdentifier = @"camera";
 
 
 -(void) saveScans {
-    _fp.scans = _scans;
+    NSMutableArray *clonedScans = [NSMutableArray new];
+    for (SCNNode *node in _scans) {
+        SCNNode *clone = [node clone];
+        [clonedScans addObject: clone];
+    }
+    _fp.scans = clonedScans;
     [_floorplanManager saveChanges];
     UIAlertController *alertController = [UIAlertController
                                           alertControllerWithTitle:@"Arrangement saved"
