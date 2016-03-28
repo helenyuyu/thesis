@@ -13,25 +13,25 @@
     {
       "size" : "40x40",
       "idiom" : "iphone",
-      "filename" : "hom3design80.png",
+      "filename" : "hom3design_40_2x.png",
       "scale" : "2x"
     },
     {
       "size" : "40x40",
       "idiom" : "iphone",
-      "filename" : "hom3design120.png",
+      "filename" : "hom3design_40_3x.png",
       "scale" : "3x"
     },
     {
       "size" : "60x60",
       "idiom" : "iphone",
-      "filename" : "hom3design120-1.png",
+      "filename" : "hom3design_60_2x.png",
       "scale" : "2x"
     },
     {
       "size" : "60x60",
       "idiom" : "iphone",
-      "filename" : "hom3design180.png",
+      "filename" : "hom3design_60_3x.png",
       "scale" : "3x"
     },
     {
