@@ -8,10 +8,9 @@
 
 #import "ScanManager.h"
 
-
 @implementation ScanManager
 @synthesize managedObjectContext = _managedObjectContext;
-
+static NSString *UploadURLString = @"MUSTFILLIN";
 
 -(id) initWithContext: (NSManagedObjectContext*) managedObjectContext {
     self = [super init];
@@ -26,17 +25,37 @@
     _scans = [[NSMutableArray alloc] initWithArray:[_managedObjectContext executeFetchRequest:fetchRequest error:nil]];
 
     for (Scan *scan in _scans) {
+        
         scan.screenshot = [NSData dataWithContentsOfFile:[ScanManager getScreenshotPath: scan] options: 0 error: &error];
         if (error)
         {
             NSLog(@"Failed to read file, error %@", error);
         }
+        //[self uploadMesh: scan.meshFilename]; // ONLY DO THIS ONCE, DELETE AFTER FIRST RUN
     }
 
-    
+    _session = [self backgroundSession];
     return self;
     
 }
+
+
+- (NSURLSession *)backgroundSession
+{
+    /*
+     Using disptach_once here ensures that multiple background sessions with the same identifier are not created in this instance of the application. If you want to support multiple background sessions within a single process, you should create each session with its own identifier.
+     */
+    static NSURLSession *session = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration backgroundSessionConfigurationWithIdentifier:@"uploadMeshes"];
+        configuration.discretionary = YES;
+        session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
+    });
+    return session;
+}
+
+
 
 -(Scan*) createScanWithMeshFilename: (NSString *) meshFilename andScreenshotFilename: (NSString *) screenshotFilename
                        andTitle: (NSString *) title andCategory: (NSString *) category;
@@ -52,6 +71,7 @@
     
     [_scans addObject: scan];
     [self saveChanges];
+    [self uploadMesh: meshFilename];
     return scan;
 }
 
@@ -142,4 +162,31 @@
         }
     }
 }
+
+
+-(void) uploadMesh: (NSString *) meshFilename {
+    NSURL *uploadURL = [NSURL URLWithString:UploadURLString];
+    NSURLRequest *request = [NSURLRequest requestWithURL:uploadURL];
+    
+    NSURL *meshUrl = [ScanManager getMeshURLFromFilename: meshFilename];
+    NSURL *textureUrl = [ScanManager getTextureURLFromFilename: meshFilename];
+    
+    NSURLSessionUploadTask * uploadMeshTask = [_session uploadTaskWithRequest:request fromFile:meshUrl];
+    [uploadMeshTask resume];
+    if (textureUrl) {
+        NSURLSessionUploadTask * uploadTextureTask = [_session uploadTaskWithRequest:request fromFile:textureUrl];
+        [uploadTextureTask resume];
+    }
+}
+
+- (void)URLSession:(NSURLSession *)session
+              task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error {
+    if (error) {
+        NSLog(@"background upload task %@ failed with error %@", task.taskDescription, error);
+    }
+    else {
+        NSLog(@"background upload task completed: %@", task.taskDescription);
+    }
+}
+
 @end

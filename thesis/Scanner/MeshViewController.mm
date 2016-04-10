@@ -16,6 +16,7 @@
 #include <vector>
 #include <cmath>
 
+
 // Local Helper Functions
 namespace
 {
@@ -287,7 +288,6 @@ namespace
                                                               andTitle: title
                                                            andCategory: category];
                                    _saveButton.hidden = YES;
-                                   
                                }];
     [alertController addAction: okAction];
     [alertController addAction: cancelAction];

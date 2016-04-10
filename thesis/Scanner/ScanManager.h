@@ -9,9 +9,10 @@
 #import <Foundation/Foundation.h>
 #import "Scan.h"
 
-@interface ScanManager : NSObject
+@interface ScanManager : NSObject<NSURLSessionTaskDelegate>
 
 @property (nonatomic,strong) NSManagedObjectContext* managedObjectContext;
+@property (nonatomic) NSURLSession *session;
 @property (nonatomic, strong) NSMutableArray *scans; // modifications should only happen in this class
 -(id) initWithContext: (NSManagedObjectContext*) managedObjectContext;
 -(Scan*) createScanWithMeshFilename: (NSString *) meshFilename
