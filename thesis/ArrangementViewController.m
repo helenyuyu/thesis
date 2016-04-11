@@ -287,10 +287,6 @@ NSString *cameraIdentifier = @"camera";
 
 -(void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"addModelToFloorplan"]) {
-//        SCNNode *pov = _sceneView.pointOfView;
-//        NSLog(@"euler angles: %f %f %f",pov.eulerAngles.x, pov.eulerAngles.y, pov.eulerAngles.z);
-//        NSLog(@"position: %f %f %f", pov.position.x, pov.position.y, pov.position.z);
-
         // dumb hack oops
         UINavigationController *nav = (UINavigationController*) segue.destinationViewController;
         ChooseScanViewController *dest = nav.viewControllers.firstObject;

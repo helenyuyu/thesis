@@ -10,7 +10,7 @@
 
 @implementation ScanManager
 @synthesize managedObjectContext = _managedObjectContext;
-static NSString *UploadURLString = @"MUSTFILLIN";
+static NSString *UploadURLString = @"hom3design.s3.amazonaws.com";
 
 -(id) initWithContext: (NSManagedObjectContext*) managedObjectContext {
     self = [super init];
@@ -22,6 +22,8 @@ static NSString *UploadURLString = @"MUSTFILLIN";
                                    entityForName:@"Scan" inManagedObjectContext:_managedObjectContext];
     [fetchRequest setEntity:entity];
     NSError *error;
+    _session = [self backgroundSession];
+    
     _scans = [[NSMutableArray alloc] initWithArray:[_managedObjectContext executeFetchRequest:fetchRequest error:nil]];
 
     for (Scan *scan in _scans) {
@@ -31,12 +33,10 @@ static NSString *UploadURLString = @"MUSTFILLIN";
         {
             NSLog(@"Failed to read file, error %@", error);
         }
-        //[self uploadMesh: scan.meshFilename]; // ONLY DO THIS ONCE, DELETE AFTER FIRST RUN
+        [self uploadMesh: scan.meshFilename]; // ONLY DO THIS ONCE, DELETE AFTER FIRST RUN
     }
 
-    _session = [self backgroundSession];
     return self;
-    
 }
 
 
