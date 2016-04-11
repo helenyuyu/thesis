@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import <Structure/StructureSLAM.h>
+#import <AWSCore/AWSCore.h>
 
 @interface AppDelegate ()
 @end
@@ -22,8 +23,17 @@
     NSLog(@"test test");
     // Override point for customization after application launch.
     
+    AWSCognitoCredentialsProvider *credentialsProvider = [[AWSCognitoCredentialsProvider alloc] initWithRegionType:AWSRegionUSEast1
+                                                                                                    identityPoolId:@"us-east-1:cb35a2fa-0554-4028-a282-87fef520f002"];
+    AWSServiceConfiguration *configuration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1
+                                                                         credentialsProvider:credentialsProvider];
+    [AWSServiceManager defaultServiceManager].defaultServiceConfiguration = configuration;
+    
+    
+    
     _fpManager = [[FloorplanManager alloc] initWithContext: self.managedObjectContext];
     _scanManager = [[ScanManager alloc] initWithContext: self.managedObjectContext];
+    
     
     return YES;
 }

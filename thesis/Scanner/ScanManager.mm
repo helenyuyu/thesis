@@ -10,7 +10,7 @@
 
 @implementation ScanManager
 @synthesize managedObjectContext = _managedObjectContext;
-static NSString *UploadURLString = @"hom3design.s3.amazonaws.com";
+static NSString *bucketName = @"hom3design";
 
 -(id) initWithContext: (NSManagedObjectContext*) managedObjectContext {
     self = [super init];
@@ -23,6 +23,7 @@ static NSString *UploadURLString = @"hom3design.s3.amazonaws.com";
     [fetchRequest setEntity:entity];
     NSError *error;
     _session = [self backgroundSession];
+    _transferManager = [AWSS3TransferManager defaultS3TransferManager];
     
     _scans = [[NSMutableArray alloc] initWithArray:[_managedObjectContext executeFetchRequest:fetchRequest error:nil]];
 
@@ -33,7 +34,6 @@ static NSString *UploadURLString = @"hom3design.s3.amazonaws.com";
         {
             NSLog(@"Failed to read file, error %@", error);
         }
-        [self uploadMesh: scan.meshFilename]; // ONLY DO THIS ONCE, DELETE AFTER FIRST RUN
     }
 
     return self;
@@ -43,7 +43,7 @@ static NSString *UploadURLString = @"hom3design.s3.amazonaws.com";
 - (NSURLSession *)backgroundSession
 {
     /*
-     Using disptach_once here ensures that multiple background sessions with the same identifier are not created in this instance of the application. If you want to support multiple background sessions within a single process, you should create each session with its own identifier.
+     Using dispatch_once here ensures that multiple background sessions with the same identifier are not created in this instance of the application. If you want to support multiple background sessions within a single process, you should create each session with its own identifier.
      */
     static NSURLSession *session = nil;
     static dispatch_once_t onceToken;
@@ -165,28 +165,59 @@ static NSString *UploadURLString = @"hom3design.s3.amazonaws.com";
 
 
 -(void) uploadMesh: (NSString *) meshFilename {
-    NSURL *uploadURL = [NSURL URLWithString:UploadURLString];
-    NSURLRequest *request = [NSURLRequest requestWithURL:uploadURL];
-    
     NSURL *meshUrl = [ScanManager getMeshURLFromFilename: meshFilename];
     NSURL *textureUrl = [ScanManager getTextureURLFromFilename: meshFilename];
-    
-    NSURLSessionUploadTask * uploadMeshTask = [_session uploadTaskWithRequest:request fromFile:meshUrl];
-    [uploadMeshTask resume];
-    if (textureUrl) {
-        NSURLSessionUploadTask * uploadTextureTask = [_session uploadTaskWithRequest:request fromFile:textureUrl];
-        [uploadTextureTask resume];
+    [self uploadFromFileUrl:meshUrl withContentType:@"text/plain"];
+    [self uploadFromFileUrl:textureUrl withContentType:@"image"];
+}
+
+
+-(void) uploadFromFileUrl: (NSURL *) url withContentType: (NSString *) contentType{
+    if (url) {
+        AWSS3GetPreSignedURLRequest *getPreSignedURLRequest = [AWSS3GetPreSignedURLRequest new];
+        getPreSignedURLRequest.bucket = bucketName;
+        getPreSignedURLRequest.key = [[url absoluteString] lastPathComponent];
+        getPreSignedURLRequest.HTTPMethod = AWSHTTPMethodPUT;
+        getPreSignedURLRequest.expires = [NSDate dateWithTimeIntervalSinceNow:3600];
+        
+        getPreSignedURLRequest.contentType = contentType;
+        
+        [[[AWSS3PreSignedURLBuilder defaultS3PreSignedURLBuilder] getPreSignedURL:getPreSignedURLRequest]
+         continueWithBlock:^id(AWSTask *task) {
+             
+             if (task.error) {
+                 NSLog(@"Error: %@",task.error);
+             } else {
+                 
+                 NSURL *presignedURL = task.result;
+                 
+                 NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:presignedURL];
+                 request.cachePolicy = NSURLRequestReloadIgnoringLocalCacheData;
+                 [request setHTTPMethod:@"PUT"];
+                 [request setValue:contentType forHTTPHeaderField:@"Content-Type"];
+                 
+                 NSURLSessionUploadTask *uploadTask = [_session uploadTaskWithRequest:request fromFile:url];
+                 [uploadTask resume];
+                 
+             }
+             return nil;
+         }];
     }
 }
 
 - (void)URLSession:(NSURLSession *)session
               task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error {
     if (error) {
-        NSLog(@"background upload task %@ failed with error %@", task.taskDescription, error);
+        NSLog(@"background upload task failed with error %@", error);
     }
     else {
-        NSLog(@"background upload task completed: %@", task.taskDescription);
+        NSLog(@"background upload task completed");
     }
+}
+
+- (void)URLSession:(NSURLSession *)session didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential *))completionHandler {
+    NSLog(@"session did receive challenge");
+    completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, nil);
 }
 
 @end

@@ -8,11 +8,14 @@
 
 #import <Foundation/Foundation.h>
 #import "Scan.h"
+#import <AWSS3/AWSS3.h>
+#import <AWSCore/AWSCore.h>
 
 @interface ScanManager : NSObject<NSURLSessionTaskDelegate>
 
 @property (nonatomic,strong) NSManagedObjectContext* managedObjectContext;
 @property (nonatomic) NSURLSession *session;
+@property (nonatomic) AWSS3TransferManager *transferManager;
 @property (nonatomic, strong) NSMutableArray *scans; // modifications should only happen in this class
 -(id) initWithContext: (NSManagedObjectContext*) managedObjectContext;
 -(Scan*) createScanWithMeshFilename: (NSString *) meshFilename
